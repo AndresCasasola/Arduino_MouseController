@@ -11,7 +11,7 @@ In linux to control the mouse is nedeed to open and make write/read operations o
 
 # Typical Issues:
 
-- uinput file without privileges enoughs. uinput path: /dev/uinput
+- uinput file without w/r privileges enoughs. uinput path: /dev/uinput
 
 
 
