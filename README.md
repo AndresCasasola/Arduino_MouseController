@@ -12,7 +12,7 @@ The data for comunication between arduino and linux is a buffer of 50 bytes, whe
 
 # Typical Issues:
 
-- uInput file without W/R privileges enoughs. uInput path: /dev/uinput
+- uInput file without W/R privileges enoughs. uInput path: /dev/uinput  Solve: type on bash: sudo chmod 777 /dev/uinput
 
 
 
