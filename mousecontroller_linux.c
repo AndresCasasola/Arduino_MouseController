@@ -5,40 +5,40 @@
 
 * A program that move the mouse in function of data reading from an
 
-* Arduino board. Works on any POSIX system (Mac/Unix/PC) 
+* Arduino board. Works on any POSIX system (Mac/Unix/PC).
 
 * This example/application use photoresistors and visible light leds to 
 
-* sense the movement of the hand
+* sense the movement of the hand.
 ----------------------------------------------------------
 
-* Created 28 December 2017
+* Created 28 December 2017.
 
-* Copyleft (c) 2017, Andres Casasola Domínguez
+* Copyleft (c) 2017, Andres Casasola Domínguez.
 ----------------------------------------------------------
 
-* Last update: December 2017
+* Last update: March 2018.
 
-* By Andrés Casasola Domínguez, GitHub: AndresCasasola
+* GitHub: AndresCasasola.
 
 */
 
 #include <stdio.h>    				// Standard input/output definitions
-#include <stdlib.h> 
+#include <stdlib.h> 				// Standard library
 #include <stdint.h>   				// Standard types
 #include <string.h>   				// String function definitions
 #include <unistd.h>   				// UNIX standard function definitions
 #include <fcntl.h>    				// File control definitions
 #include <errno.h>    				// Error number definitions
 #include <termios.h>  				// POSIX terminal control definitions
-#include <sys/ioctl.h>
-#include <getopt.h>
+#include <sys/ioctl.h>				// Input/Output control
+#include <getopt.h>					// Getopt
 #include "arduino-serial-lib.h"		// Libraries for serial communication -> Thanks to todbot, GitHub: https://github.com/todbot
 #include "arduino-serial-lib.c"
-#include <sys/types.h>				// Libraries for use the mouse (which are not up to here)
-#include <sys/stat.h>
-#include <linux/uinput.h>
-#include <math.h>
+#include <sys/types.h>				// Types
+#include <sys/stat.h>				// Library for read/analyze files
+#include <linux/uinput.h>			// Library to use virtual mouse
+#include <math.h>					// Math
 
 #define DEVICE_FILENAME "/dev/ttyACM0"		// Usually will be ttyUSB0 or ttyACM0, ttyACM1,...
 #define BAUDRATE 9600						// Baudrate from/to arduino
@@ -49,11 +49,11 @@ static int uinput_fd = 0;
 
 //----------------------------------------------------------//
 
-// Functions Headers
+// Function Headers
 
 int process_received_data(char *buf);
 int uinput_mouse_init(void);
-void uinput_mouse_move_cursor(char izq, char dcha);
+void uinput_mouse_move_cursor(char left, char right);
 
 // Main Function
 
@@ -109,6 +109,7 @@ int process_received_data(char *buf){
 			buf[i+1]='\0';
 		}
 	}
+	
 	if(buf[0]=='a'||buf[0]=='e' && buf[1]=='a'||buf[1]=='e')
 		return 0;
 	else{
@@ -120,14 +121,17 @@ int process_received_data(char *buf){
 }
 
 int uinput_mouse_init(void){
+	
 	struct uinput_user_dev dev;
 	int i;
 
 	uinput_fd = open("/dev/uinput", O_WRONLY);
+	
 	if (uinput_fd <= 0) {
 		perror("Error opening the uinput device\n");
 		return -1;
 	}
+	
 	memset(&dev,0,sizeof(dev)); 	// Intialize the uinput device to NULL
 	strncpy(dev.name, "mouse", UINPUT_MAX_NAME_SIZE);
 	dev.id.version = 4;
@@ -147,15 +151,18 @@ int uinput_mouse_init(void){
 	}
 	
 	write(uinput_fd, &dev, sizeof(dev));
-	if (ioctl(uinput_fd, UI_DEV_CREATE))
-	{
+	
+	if (ioctl(uinput_fd, UI_DEV_CREATE)){
 		printf("Unable to create UINPUT device.");
 		return -1;
 	}
+	
 	return 1;
+	
 }
 
 void uinput_mouse_move_cursor(char left, char right){
+	
 	int dir=0;
 	struct input_event event; // Input device structure
 
@@ -180,6 +187,7 @@ void uinput_mouse_move_cursor(char left, char right){
 	event.code = SYN_REPORT;
 	event.value = 0;
 	write(uinput_fd, &event, sizeof(event));
+	
 }
 
 
