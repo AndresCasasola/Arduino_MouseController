@@ -1,6 +1,6 @@
 # Arduino MouseController
 
-- Arduino mousecontroller is an application to controls the linux mouse with sensors diferent from the typical optic mouse or touchpad.
+- Arduino mousecontroller is an application to control the linux mouse with sensors diferent from the typical optic mouse or touchpad.
 
 - These examples uses arduino-serial-library developed by todbot, https://github.com/todbot/arduino-serial
 
