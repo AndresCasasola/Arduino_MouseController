@@ -8,7 +8,7 @@
 Intuitively the sensor placed to the right moves the mouse to the right and vice versa with the left.
 The data for comunication between arduino and linux is a buffer of 50 bytes, where only 2 first bytes (char) are used to represent the on/off state of every sensor.
 
-- In linux to control the mouse is nedeed to open and make write/read operations over the "uinput" file. This file is which hands the mouse.
+- In linux to control the mouse is nedeed to open and make write/read operations to the "uinput" file. This file is which hands the mouse.
 
 # Typical Issues:
 
